@@ -13,3 +13,7 @@ A communication with a remote control device is established over a [Bluetooth](h
 A remote control device software is written in [QML](https://en.wikipedia.org/wiki/QML) and may run on a variety of devices from moboile phones to personal computers. A remote control device software sources are stored in the `app` directory. You can use [Qt SDK](http://qt-project.org/downloads) to build and deploy it to your device of choice.
 
 A printed circuit board scheme is stored in the `pcb` directory both in [BMP](https://en.wikipedia.org/wiki/BMP_file_format) and [Sprint-Layout](http://www.virtualworkbench.com/sprint-layout.html) formats.
+
+## Demo
+
+Coming soon ...
