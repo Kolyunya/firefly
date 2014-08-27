@@ -365,9 +365,10 @@ ApplicationWindow
             width: parent.width
             height: 150
             tickmarksEnabled: false
-            value: 30
+            value: 55
             stepSize: 1
             orientation: 1
+            minimumValue: 10
             maximumValue: 100
             enabled: false
             onValueChanged:
