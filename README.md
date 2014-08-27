@@ -6,7 +6,7 @@ Firefly is an open-source software-hardware project which is basically a night-l
 
 Firefly's source of light is a single [RGB](https://en.wikipedia.org/wiki/RGB_color_model) [LED](http://en.wikipedia.org/wiki/Light-emitting_diode).
 
-An LED is controlled by an [Arduion Pro Mini](http://arduino.cc/en/Main/ArduinoBoardProMini) microcontroller. An Arduino is powered with an [nine-volt battery](https://en.wikipedia.org/wiki/Nine-volt_battery). An Arduino sketch is located in the `[sketch](https://github.com/Kolyunya/firefly/tree/master/sketch/)` directory.
+An LED is controlled by an [Arduion Pro Mini](http://arduino.cc/en/Main/ArduinoBoardProMini) microcontroller. An Arduino is powered with an [nine-volt battery](https://en.wikipedia.org/wiki/Nine-volt_battery). An Arduino sketch is located in the [sketch](https://github.com/Kolyunya/firefly/tree/master/sketch/) directory.
 
 A communication with a remote control device is established over a [Bluetooth](https://en.wikipedia.org/wiki/Bluetooth) connection. A Bluetooth module used by the Firefly is [JY-MCU](http://reprap.org/wiki/Jy-mcu).
 
