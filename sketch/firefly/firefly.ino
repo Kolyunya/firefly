@@ -1,8 +1,8 @@
 //  Led parameters
 int ledPin[3] = { 6 , 3 , 5 };
-int ledColor[3] = { 0 , 0 , 0 };
-int ledBrightness = 0;
-bool ledState = false;
+int ledColor[3] = { 0xF2 , 0x00 , 0xFF };
+int ledBrightness = 30;
+bool ledState = true;
 
 //  Client command
 String command;
@@ -39,7 +39,11 @@ void updateLedColor()
 void setup()
 {
   
+    //  Initialize serial port
     Serial.begin(9600);
+
+    //  Switch on the LED with default color and brightness    
+    updateLedColor();
     
 }
 
