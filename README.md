@@ -16,4 +16,4 @@ A printed circuit board scheme is stored in the [pcb](https://github.com/Kolyuny
 
 ## Demo
 
-Coming soon ...
+At the moment there are just few photos ( [[1]](https://github.com/Kolyunya/firefly/blob/master/photos/0001.jpg) [[2]](https://github.com/Kolyunya/firefly/blob/master/photos/0002.jpg) [[3]](https://github.com/Kolyunya/firefly/blob/master/photos/0003.jpg) ) but I will try to a add a video demonstration soon.
