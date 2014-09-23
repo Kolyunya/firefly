@@ -3,6 +3,7 @@ int ledPin[3] = { 6 , 3 , 5 };
 int ledColor[3] = { 0xF2 , 0x00 , 0xFF };
 int ledBrightness = 30;
 bool ledState = true;
+bool autoMode = true;
 
 //  Client command
 String command;
@@ -54,6 +55,12 @@ void processInputCommands ( void )
                 updateLedColor();
             }
             
+            // Client requested to enable auto mode
+            else if ( command == "AUTO" )
+            {
+               autoMode = true;
+            }
+            
             // Command was processed or ignored
             command = "";
 
@@ -70,6 +77,59 @@ void processInputCommands ( void )
 
     }
   
+}
+
+//  Performs automatic LED color transition
+void performColorTransition ( void )
+{
+  
+    //  Current alteration direction
+    static bool direction = true;
+    
+    //  LED id currently being altered
+    static unsigned char ledId = 0;
+    
+    //  Switch the LED currently beint altered
+    if
+    (
+        (
+            ledColor[ledId] == 0
+            	&&
+            direction == false
+        )
+            ||
+        (
+            ledColor[ledId] == 255
+            	&&
+            direction == true
+        )
+    )
+    {
+      
+        //  Switch alteration direction
+        if
+        (
+            ledColor[0] == ledColor[1]
+            	&&
+            ledColor[1] == ledColor[2]
+            	&&
+            ledId == 2
+        )
+        {
+            direction = !direction;
+        }
+        
+        //  Switch LED id currenly being altered
+        ledId = ledId == 2 ? 0 : ledId+1;
+        
+    }
+    
+    //  Alter LED color
+    ledColor[ledId] += direction ? 1 : -1;
+    
+    //  Update LED color
+    updateLedColor();
+
 }
 
 //  Updates the PWM signal on led pins to match requested color and brightness
@@ -118,5 +178,14 @@ void loop ( void )
 
     //  Processes input commands
     processInputCommands();
+    
+    //  When in auto mode
+    if ( autoMode )
+    {
+    
+        //  Alter LED color automatically
+        performColorTransition();
+    
+    }
     
 }
