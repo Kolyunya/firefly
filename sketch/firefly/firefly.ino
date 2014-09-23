@@ -7,6 +7,71 @@ bool ledState = true;
 //  Client command
 String command;
 
+//  Processes input commands received over the Bluetooth connection
+void processInputCommands ( void )
+{
+  
+    //  While there is some data on the serial port
+    while ( Serial.available() )
+    {
+
+        //  Read one character from the serial port
+        int character = Serial.read();
+
+        //  Full command received
+        if ( character == '\n' )
+        {
+
+            //  Client requested to switch the LED on
+            if ( command == "ON" )
+            {
+                ledState = true;
+                updateLedColor();
+            }
+
+            //  Client requested to switch the LED off
+            else if ( command == "OFF" )
+            {
+                ledState = false;
+                updateLedColor();
+            }
+
+            //  Client requested to alter the LED brightness
+            else if ( command.startsWith("BRIGHTNESS:") )
+            {
+                command.replace("BRIGHTNESS:","");
+                ledBrightness = command.toInt();
+                updateLedColor();
+            }
+
+            //  Client requested to alter the LED color
+            else if ( command.startsWith("COLOR:") )
+            {
+                command.replace("COLOR:","");
+                ledColor[0] = ( "0x" + command.substring(0,1) ).toInt();
+                ledColor[1] = ( "0x" + command.substring(2,3) ).toInt();
+                ledColor[2] = ( "0x" + command.substring(4,5) ).toInt();
+                updateLedColor();
+            }
+            
+            // Command was processed or ignored
+            command = "";
+
+        }
+        
+        //  The command was not received completely yes
+        else
+        {
+          
+          //  Add the character to the command
+          command += (char)character;
+          
+        }
+
+    }
+  
+}
+
 //  Updates the PWM signal on led pins to match requested color and brightness
 void updateLedColor ( void )
 {
@@ -51,63 +116,7 @@ void setup ( void )
 void loop ( void )
 {
 
-    //  While there is some data on the serial port
-    while ( Serial.available() )
-    {
-
-        //  Read one character from the serial port
-        int character = Serial.read();
-
-        //  Full command received
-        if ( character == '\n' )
-        {
-
-            //  Client requested to switch the LED on
-            if ( command == "ON" )
-            {
-                ledState = true;
-                updateLedColor();
-            }
-
-            //  Client requested to switch the LED off
-            else if ( command == "OFF" )
-            {
-                ledState = false;
-                updateLedColor();
-            }
-
-            //  Client requested to alter the LED brightness
-            else if ( command.startsWith("BRIGHTNESS:") )
-            {
-                command.replace("BRIGHTNESS:","");
-                ledBrightness = command.toInt();
-                updateLedColor();
-            }
-
-            //  Client requested to alter the LED color
-            else if ( command.startsWith("COLOR:") )
-            {
-                command.replace("COLOR:","");
-                ledColor[0] = ( "0x" + command.substring(0,1) ).toInt();
-                ledColor[1] = ( "0x" + command.substring(2,3) ).toInt();
-                ledColor[2] = ( "0x" + command.substring(4,5) ).toInt();
-                updateLedColor();
-            }
-
-            // Command was processed or ignored
-            command = "";
-
-        }
-        
-        //  The command was not received completely yes
-        else
-        {
-          
-          //  Add the character to the command
-          command += (char)character;
-          
-        }
-
-    }
+    //  Processes input commands
+    processInputCommands();
     
 }
