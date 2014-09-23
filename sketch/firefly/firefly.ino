@@ -8,7 +8,7 @@ bool ledState = true;
 String command;
 
 //  Updates the PWM signal on led pins to match requested color and brightness
-void updateLedColor()
+void updateLedColor ( void )
 {
   
     //  The LED is switched on
@@ -36,7 +36,7 @@ void updateLedColor()
 }
 
 //  Initializes the serial port
-void setup()
+void setup ( void )
 {
   
     //  Initialize serial port
@@ -48,7 +48,7 @@ void setup()
 }
 
 //  Reads commands from serial port and updates led color and brightness
-void loop()
+void loop ( void )
 {
 
     //  While there is some data on the serial port
@@ -109,4 +109,5 @@ void loop()
         }
 
     }
+    
 }
