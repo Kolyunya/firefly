@@ -11,7 +11,7 @@ String command;
 //  Processes input commands received over the Bluetooth connection
 void processInputCommands ( void )
 {
-  
+
     //  While there is some data on the serial port
     while ( Serial.available() )
     {
@@ -54,79 +54,79 @@ void processInputCommands ( void )
                 ledColor[2] = ( "0x" + command.substring(4,5) ).toInt();
                 updateLedColor();
             }
-            
-            // Client requested to enable auto mode
+
+            //  Client requested to enable auto mode
             else if ( command == "AUTO" )
             {
                autoMode = true;
             }
-            
-            // Command was processed or ignored
+
+            //  Command was processed or ignored
             command = "";
 
         }
-        
+
         //  The command was not received completely yes
         else
         {
-          
+
           //  Add the character to the command
           command += (char)character;
-          
+
         }
 
     }
-  
+
 }
 
 //  Performs automatic LED color transition
 void performColorTransition ( void )
 {
-  
+
     //  Current alteration direction
     static bool direction = true;
-    
+
     //  LED id currently being altered
     static unsigned char ledId = 0;
-    
+
     //  Switch the LED currently beint altered
     if
     (
         (
             ledColor[ledId] == 0
-            	&&
+                &&
             direction == false
         )
             ||
         (
             ledColor[ledId] == 255
-            	&&
+                &&
             direction == true
         )
     )
     {
-      
+
         //  Switch alteration direction
         if
         (
             ledColor[0] == ledColor[1]
-            	&&
+                &&
             ledColor[1] == ledColor[2]
-            	&&
+                &&
             ledId == 2
         )
         {
             direction = !direction;
         }
-        
+
         //  Switch LED id currenly being altered
         ledId = ledId == 2 ? 0 : ledId+1;
-        
+
     }
-    
+
     //  Alter LED color
     ledColor[ledId] += direction ? 1 : -1;
-    
+
     //  Update LED color
     updateLedColor();
 
@@ -135,41 +135,41 @@ void performColorTransition ( void )
 //  Updates the PWM signal on led pins to match requested color and brightness
 void updateLedColor ( void )
 {
-  
+
     //  The LED is switched on
     if ( ledState == true )
     {
-      
+
         //  Write color values corrected by the brightness coefficient to the LED pins
         analogWrite(ledPin[0],ledColor[0]*ledBrightness/100);
         analogWrite(ledPin[1],ledColor[1]*ledBrightness/100);
         analogWrite(ledPin[2],ledColor[2]*ledBrightness/100);
-        
+
     }
-    
-    //   The LED is switched off
+
+    //  The LED is switched off
     else
     {
-      
+
         //  Write zeros to all LED pins
         analogWrite(ledPin[0],0);
         analogWrite(ledPin[1],0);
         analogWrite(ledPin[2],0);
-        
+
     }
-    
+
 }
 
 //  Initializes the serial port
 void setup ( void )
 {
-  
+
     //  Initialize serial port
     Serial.begin(9600);
 
-    //  Switch on the LED with default color and brightness    
+    //  Switch on the LED with default color and brightness
     updateLedColor();
-    
+
 }
 
 //  Reads commands from serial port and updates led color and brightness
@@ -178,14 +178,14 @@ void loop ( void )
 
     //  Processes input commands
     processInputCommands();
-    
+
     //  When in auto mode
     if ( autoMode )
     {
-    
+
         //  Alter LED color automatically
         performColorTransition();
-    
+
     }
-    
+
 }
