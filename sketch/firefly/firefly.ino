@@ -1,7 +1,7 @@
 //  Led parameters
-int ledPin[3] = { 6 , 3 , 5 };
-int ledColor[3] = { 0xF2 , 0x00 , 0xFF };
-int ledBrightness = 30;
+unsigned char ledPin[3] = { 6 , 3 , 5 };
+unsigned char ledColor[3] = { 0 , 0 , 0 };
+unsigned char ledBrightness = 100;
 bool ledState = true;
 bool autoMode = true;
 
@@ -127,8 +127,18 @@ void performColorTransition ( void )
     //  Alter LED color
     ledColor[ledId] += direction ? 1 : -1;
 
+    Serial.print(ledColor[0]);
+    Serial.print('\t');
+    Serial.print(ledColor[1]);
+    Serial.print('\t');
+    Serial.print(ledColor[2]);
+    Serial.print('\n');
+
     //  Update LED color
     updateLedColor();
+
+    //  Apply some delay
+    delay(42);
 
 }
 
