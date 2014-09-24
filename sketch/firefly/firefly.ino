@@ -83,49 +83,65 @@ void processInputCommands ( void )
 void performColorTransition ( void )
 {
 
-    //  Current alteration direction
-    static bool direction = true;
+    //  Current alteration direction of each LED
+    static bool ledDirection[3] =
+    {
+        random(0,1),
+        random(0,1),
+        random(0,1)
+    };
 
-    //  LED id currently being altered
-    static unsigned char ledId = 0;
+    //  When should the LED try to switch direction
+    static unsigned long long ledCooldown[3] =
+    {
+        0,
+        0,
+        0
+    };
 
-    //  Switch the LED currently beint altered
-    if
-    (
-        (
-            ledColor[ledId] == 0
-                &&
-            direction == false
-        )
-            ||
-        (
-            ledColor[ledId] == 255
-                &&
-            direction == true
-        )
-    )
+    for ( unsigned char ledId = 0 ; ledId < 4 ; ledId++ )
     {
 
-        //  Switch alteration direction
+        //  When alternation reached the end-point...
         if
         (
-            ledColor[0] == ledColor[1]
-                &&
-            ledColor[1] == ledColor[2]
-                &&
-            ledId == 2
+            (
+                ledColor[ledId] == 0
+                    &&
+                ledDirection[ledId] == false
+            )
+                ||
+            (
+                ledColor[ledId] == 255
+                    &&
+                ledDirection[ledId] == true
+            )
         )
         {
-            direction = !direction;
+
+            //  ... and the cooldown is complete
+            if ( ledCooldown[ledId] < millis() )
+            {
+
+                //  Try to switch the alternation direction
+                ledDirection[ledId] = random(0,1);
+                ledCooldown[ledId] = millis() + 5000;
+                continue;
+
+            }
+
         }
 
-        //  Switch LED id currenly being altered
-        ledId = ledId == 2 ? 0 : ledId+1;
+        //  Alternation end-point is not reached yet
+        else
+        {
+
+            //  Alter LED color
+            ledColor[ledId] += ledDirection[ledId] ? 1 : -1;
+
+        }
 
     }
-
-    //  Alter LED color
-    ledColor[ledId] += direction ? 1 : -1;
 
     Serial.print(ledColor[0]);
     Serial.print('\t');
@@ -176,6 +192,9 @@ void setup ( void )
 
     //  Initialize serial port
     Serial.begin(9600);
+
+    //  Initialize random numbers generator
+    randomSeed(analogRead(9));
 
     //  Switch on the LED with default color and brightness
     updateLedColor();
