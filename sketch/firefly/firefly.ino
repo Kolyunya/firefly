@@ -86,17 +86,9 @@ void performColorTransition ( void )
     //  Current alteration direction of each LED
     static bool ledDirection[3] =
     {
-        random(0,1),
-        random(0,1),
-        random(0,1)
-    };
-
-    //  When should the LED try to switch direction
-    static unsigned long long ledCooldown[3] =
-    {
-        0,
-        0,
-        0
+        random(0,2),
+        random(0,2),
+        random(0,2)
     };
 
     for ( unsigned char ledId = 0 ; ledId < 4 ; ledId++ )
@@ -119,15 +111,10 @@ void performColorTransition ( void )
         )
         {
 
-            //  ... and the cooldown is complete
-            if ( ledCooldown[ledId] < millis() )
+            //  Try to switch the alternation direction
+            if ( ! random(0,42) )
             {
-
-                //  Try to switch the alternation direction
-                ledDirection[ledId] = random(0,1);
-                ledCooldown[ledId] = millis() + 5000;
-                continue;
-
+                ledDirection[ledId] =! ledDirection[ledId];
             }
 
         }
@@ -154,7 +141,7 @@ void performColorTransition ( void )
     updateLedColor();
 
     //  Apply some delay
-    delay(42);
+    delay(142);
 
 }
 
